@@ -31,6 +31,7 @@ public class Matrix {
         double[] m1 = this.getMatrix();
         double[] m2 = matrix.getMatrix();
         double[] res = result.getMatrix();
+
         if (this.columns == matrix.rows) {
             double sum = 0.0;
             for (int i = 0; i < this.rows; i++) {
@@ -43,13 +44,18 @@ public class Matrix {
                 }
             }
 
-        } else{
+        } else {
             System.out.println("Not possible");
         }
             result.setMatrix(res);
             return result;
-        }
+    }
 
+    public boolean equals(Matrix matrix) {
+        double[] m1 = this.getMatrix();
+        double[] m2 = matrix.getMatrix();
+        return m1 == m2;
+    }
 
     public double[] getMatrix() {
         return matrix;
