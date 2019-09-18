@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Matrix {
@@ -54,7 +55,7 @@ public class Matrix {
     public boolean equals(Matrix matrix) {
         double[] m1 = this.getMatrix();
         double[] m2 = matrix.getMatrix();
-        return m1 == m2;
+        return Arrays.equals(m1,m2);
     }
 
     public double[] getMatrix() {
