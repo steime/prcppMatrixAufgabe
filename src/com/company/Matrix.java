@@ -6,33 +6,56 @@ public class Matrix {
     int rows, columns;
     double[] matrix;
 
-    public Matrix (int rows, int columns) {
+    public Matrix(int rows, int columns) {
+        this.rows = rows;
+        this.columns = columns;
         Random random = new Random();
-        matrix = new double[rows*columns];
-        for (int i = 0;  i < matrix.length ; i++) {
+        matrix = new double[rows * columns];
+        for (int i = 0; i < matrix.length; i++) {
             matrix[i] = random.nextDouble();
         }
     }
 
-    public Matrix (int rows, int columns, int value) {
+    public Matrix(int rows, int columns, int value) {
+        this.rows = rows;
+        this.columns = columns;
         Random random = new Random();
-        matrix = new double[rows*columns];
-        for (int i = 0;  i < matrix.length ; i++) {
+        matrix = new double[rows * columns];
+        for (int i = 0; i < matrix.length; i++) {
             matrix[i] = value;
         }
     }
 
     public Matrix multiply(Matrix matrix) {
-        Matrix result = new Matrix(this.rows,matrix.columns,0);
+        Matrix result = new Matrix(this.rows, matrix.columns, 0);
+        double[] m1 = this.getMatrix();
+        double[] m2 = matrix.getMatrix();
+        double[] res = result.getMatrix();
         if (this.columns == matrix.rows) {
-            int length = this.rows*matrix.columns;
-            for (int i = 0; i < length; i++ ){
-
+            double sum = 0.0;
+            for (int i = 0; i < this.rows; i++) {
+                for (int j = 0; j < matrix.columns; j++) {
+                    sum = 0.0;
+                    for (int k = 0; k < matrix.rows; k++) {
+                        sum = sum + m1[i * this.columns + k] * m2[k * matrix.columns + j];
+                    }
+                    res [i * result.columns + j] = sum;
+                }
             }
 
-        } else {
+        } else{
             System.out.println("Not possible");
         }
-        return result;
+            result.setMatrix(res);
+            return result;
+        }
+
+
+    public double[] getMatrix() {
+        return matrix;
+    }
+
+    public void setMatrix(double[] matrix) {
+        this.matrix = matrix;
     }
 }
