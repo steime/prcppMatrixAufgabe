@@ -7,6 +7,10 @@ public class Matrix {
     int rows, columns;
     double[] matrix;
 
+    static {
+        System.loadLibrary("prcppMatrixAufgabe");
+    }
+
     public Matrix(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
@@ -51,6 +55,8 @@ public class Matrix {
             result.setMatrix(res);
             return result;
     }
+
+    native void multiplyC(double[] a, double[] b, double[] r, int m, int n, int o);
 
     public boolean equals(Matrix matrix) {
         double[] m1 = this.getMatrix();
