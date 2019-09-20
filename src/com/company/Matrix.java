@@ -61,6 +61,23 @@ public class Matrix {
         return res;
     }
 
+    public Matrix power(int k) {
+        if (this.rows != this.columns) {
+            throw new IllegalArgumentException("Matrix not quadratic");
+        }
+        int length = this.rows;
+        Matrix empty = new Matrix(length,length,0);
+        Matrix result = this;
+        double[] res = result.matrix;
+        double[] emp = empty.matrix;
+        for (int i = 1; i < k ; i++) {
+           res = multi(res,this.matrix,emp,length,length,length);
+        }
+
+        result.setMatrix(res);
+        return result;
+    }
+
     public Matrix multiplyNative(Matrix matrix) {
         Matrix result = new Matrix(this.rows, matrix.columns, 0);
         if (this.columns == matrix.rows) {
