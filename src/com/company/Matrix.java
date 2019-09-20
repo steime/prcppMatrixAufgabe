@@ -56,6 +56,14 @@ public class Matrix {
             return result;
     }
 
+    public Matrix multiplyNative(Matrix matrix) {
+        Matrix result = new Matrix(this.rows, matrix.columns, 0);
+        if (this.columns == matrix.rows) {
+            multiplyC(this.matrix, matrix.matrix, result.matrix, this.rows, this.columns, matrix.columns);
+        }
+        return result;
+    }
+
     native void multiplyC(double[] a, double[] b, double[] r, int m, int n, int o);
 
     public boolean equals(Matrix matrix) {
