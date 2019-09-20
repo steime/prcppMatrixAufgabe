@@ -1,6 +1,5 @@
 #include <iostream>
 #include "com_company_Matrix.h"
-#include <array>
 
 using namespace std;
 
@@ -8,7 +7,6 @@ JNIEXPORT void JNICALL Java_com_company_Matrix_multiplyC
 (JNIEnv *env, jobject jobj, jdoubleArray jA, jdoubleArray jB, jdoubleArray jC, jint zeileA, jint spalteA, jint spalteB)
 {
 
-	
 	jboolean isCopyA;
 	jboolean isCopyB;
 	jboolean isCopyC;
@@ -39,5 +37,4 @@ JNIEXPORT void JNICALL Java_com_company_Matrix_multiplyC
 		env->ReleaseDoubleArrayElements(jC, C, 0);
 	}
 	
-
 }

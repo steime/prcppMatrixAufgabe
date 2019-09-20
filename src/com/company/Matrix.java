@@ -37,6 +37,7 @@ public class Matrix {
         double[] m2 = matrix.getMatrix();
         double[] res = result.getMatrix();
 
+
         if (this.columns == matrix.rows) {
                 double sum = 0.0;
                 for (int i = 0; i < this.rows; i++) {
