@@ -86,7 +86,15 @@ public class Matrix {
         return result;
     }
 
+    public Matrix powerNative(int k) {
+        Matrix result = new Matrix(this.rows,this.columns,0);
+        powerC(this.matrix, result.matrix, k, this.columns);
+        return result;
+    }
+
     native void multiplyC(double[] a, double[] b, double[] r, int m, int n, int o);
+
+    native void powerC(double[] a, double[] res, int k, int columns);
 
     public boolean equals(Matrix matrix) {
         double[] m1 = this.getMatrix();
