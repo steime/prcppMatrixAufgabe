@@ -39,22 +39,26 @@ public class Matrix {
 
 
         if (this.columns == matrix.rows) {
-                double sum = 0.0;
-                for (int i = 0; i < this.rows; i++) {
-                    for (int j = 0; j < matrix.columns; j++) {
-                        sum = 0.0;
-                        for (int k = 0; k < this.columns; k++) {
-                            sum = sum + m1[i * this.columns + k] * m2[k * matrix.columns + j];
-                        }
-                        res [i * matrix.columns + j] = sum;
-                    }
-                }
-
+            res = multi(m1,m2,res,this.rows,this.columns,matrix.columns);
         } else {
             System.out.println("Not possible");
         }
             result.setMatrix(res);
             return result;
+    }
+
+    private double[] multi(double[] m1, double[] m2, double[] res, int m1rows, int m1columns, int m2columns) {
+        double sum = 0.0;
+        for (int i = 0; i < m1rows; i++) {
+            for (int j = 0; j < m2columns; j++) {
+                sum = 0.0;
+                for (int k = 0; k < m1columns; k++) {
+                    sum = sum + m1[i * m1columns + k] * m2[k * m2columns + j];
+                }
+                res [i * m2columns + j] = sum;
+            }
+        }
+        return res;
     }
 
     public Matrix multiplyNative(Matrix matrix) {
