@@ -38,16 +38,16 @@ public class Matrix {
         double[] res = result.getMatrix();
 
         if (this.columns == matrix.rows) {
-            double sum = 0.0;
-            for (int i = 0; i < this.rows; i++) {
-                for (int j = 0; j < matrix.columns; j++) {
-                    sum = 0.0;
-                    for (int k = 0; k < matrix.rows; k++) {
-                        sum = sum + m1[i * this.columns + k] * m2[k * matrix.columns + j];
+                double sum = 0.0;
+                for (int i = 0; i < this.rows; i++) {
+                    for (int j = 0; j < matrix.columns; j++) {
+                        sum = 0.0;
+                        for (int k = 0; k < this.columns; k++) {
+                            sum = sum + m1[i * this.columns + k] * m2[k * matrix.columns + j];
+                        }
+                        res [i * matrix.columns + j] = sum;
                     }
-                    res [i * result.columns + j] = sum;
                 }
-            }
 
         } else {
             System.out.println("Not possible");
