@@ -40,16 +40,33 @@ JNIEXPORT void JNICALL Java_com_company_Matrix_multiplyC
 		env->ReleaseDoubleArrayElements(jC, C, 0);
 	}
 
-	
 }
 
 JNIEXPORT void JNICALL Java_com_company_Matrix_powerC
-(JNIEnv *env1, jobject jobj1, jdoubleArray d, jdoubleArray res,  jint k, jint col)
+(JNIEnv *env1, jobject jobj1, jdoubleArray d, jdoubleArray res, jint k, jint col)
 {
+	jint length = env1->GetArrayLength(d);
+	jboolean isCopyD;
+	jboolean isCopyRes;
+	jboolean isCopyTemp;
+	jdouble* D = env1->GetDoubleArrayElements(d, &isCopyD);
+	jdouble* RES = env1->GetDoubleArrayElements(res, &isCopyRes);
+	jdouble* TEMP = env1->GetDoubleArrayElements(res, &isCopyTemp);
 
 	for (auto i = 0; i < k; i++)
 	{
-		Java_com_company_Matrix_multiplyC(env1,jobj1, res, d, res,col,col,col);
+		multiply(TEMP,D,RES,col,col,col);
+		memcpy(TEMP, RES, length*sizeof(jdouble));
+	}
+
+	if (isCopyD == JNI_TRUE) {
+		env1->ReleaseDoubleArrayElements(d, D, 0);
+	}
+	if (isCopyRes == JNI_TRUE) {
+		env1->ReleaseDoubleArrayElements(res, RES, JNI_ABORT);
+	}
+	if (isCopyTemp == JNI_TRUE) {
+		env1->ReleaseDoubleArrayElements(res, TEMP, 0);
 	}
 
 }

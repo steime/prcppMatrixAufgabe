@@ -39,7 +39,7 @@ public class Matrix {
 
 
         if (this.columns == matrix.rows) {
-            res = multi(m1,m2,res,this.rows,this.columns,matrix.columns);
+            multi(m1,m2,res,this.rows,this.columns,matrix.columns);
         } else {
             System.out.println("Not possible");
         }
@@ -67,14 +67,19 @@ public class Matrix {
         }
         int length = this.rows;
         Matrix empty = new Matrix(length,length,0);
-        Matrix result = this;
-        double[] res = result.matrix;
+        Matrix debug = new Matrix(length,length,0);
+        Matrix result = new Matrix(length,length,0);
         double[] emp = empty.matrix;
-        for (int i = 1; i < k ; i++) {
-           res = multi(res,this.matrix,emp,length,length,length);
+        double[] deb = debug.matrix;
+        double[] temp = this.matrix;
+
+        for (int i = 0; i < k ; i++) {
+           deb = multi(temp,this.matrix,emp,length,length,length);
+           temp = deb.clone();
+           //emp = res.clone();
         }
 
-        result.setMatrix(res);
+        result.setMatrix(deb);
         return result;
     }
 
@@ -87,6 +92,9 @@ public class Matrix {
     }
 
     public Matrix powerNative(int k) {
+        if (this.rows != this.columns) {
+            throw new IllegalArgumentException("Matrix not quadratic");
+        }
         Matrix result = new Matrix(this.rows,this.columns,0);
         powerC(this.matrix, result.matrix, k, this.columns);
         return result;
