@@ -5,12 +5,13 @@ public class Main {
     public static void main(String[] args) {
         Matrix m1 , m2, m3 , m4, m5 ,m6 ,m7;
         int rows1 = 500, columns1 = 6000, rows2 = 6000, columns2 = 400;
-//        m1 = new Matrix(rows1,columns1,2);
-//        m2 = new Matrix(rows2,columns2,3);
-        m3 = new Matrix(3,3,2);
+        m1 = new Matrix(rows1,columns1,2);
+        m2 = new Matrix(rows2,columns2,3);
+        m3 = new Matrix(250,250,2);
 
-        m1 = new Matrix(3,3,2);
-        m2 = new Matrix(3,3,3);
+        // Debug matrices
+       // m1 = new Matrix(3,3,2);
+       // m2 = new Matrix(3,3,3);
 //        m3 = new Matrix(3,3,2);
 
         long start1 = System.currentTimeMillis();
@@ -26,11 +27,11 @@ public class Main {
         System.out.println("Sind Matrizen gleich? " + m5.equals(m6));
 
         long start3 = System.currentTimeMillis();
-        m4 = m3.power(5);
+        m4 = m3.power(91);
         long end3 = System.currentTimeMillis();
         System.out.println("Zeit in Java Power: " + (end3 - start3));
         long start4 = System.currentTimeMillis();
-        m7 = m3.powerNative(3);
+        m7 = m3.powerNative(91);
         long end4 = System.currentTimeMillis();
         System.out.println("Zeit in C++ Power: " + (end4 - start4));
         System.out.println("Sind Matrizen gleich? " + m4.equals(m7));
@@ -43,7 +44,12 @@ public class Main {
         Sind Matrizen gleich? true
 
         Durchlauf mit release dll
-        Zeit in Java: 4579 ms
-        Zeit in C++: 4224 ms
-        Sind Matrizen gleich? true*/
+        Zeit in Java: 5353 ms
+        Zeit in C++: 5228 ms
+        Sind Matrizen gleich? true
+        Zeit in Java Power: 2201
+        Zeit in C++ Power: 1786
+        Sind Matrizen gleich? true
+
+         */
 }

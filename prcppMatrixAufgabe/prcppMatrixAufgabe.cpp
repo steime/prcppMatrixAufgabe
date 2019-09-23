@@ -20,7 +20,6 @@ void multiply(jdouble* A, jdouble* B, jdouble* C, jint zeileA, jint spalteA, jin
 JNIEXPORT void JNICALL Java_com_company_Matrix_multiplyC
 (JNIEnv *env, jobject jobj, jdoubleArray jA, jdoubleArray jB, jdoubleArray jC, jint zeileA, jint spalteA, jint spalteB)
 {
-
 	jboolean isCopyA;
 	jboolean isCopyB;
 	jboolean isCopyC;
@@ -30,15 +29,12 @@ JNIEXPORT void JNICALL Java_com_company_Matrix_multiplyC
 
 	multiply(A, B, C, zeileA, spalteA, spalteB);
 		
-	if (isCopyA == JNI_TRUE) {
-		env->ReleaseDoubleArrayElements(jA, A, 0);
-	}
-	if (isCopyB == JNI_TRUE) {
-		env->ReleaseDoubleArrayElements(jB, B, 0);
-	}
-	if (isCopyC == JNI_TRUE) {
+
+		env->ReleaseDoubleArrayElements(jA, A, JNI_ABORT);
+
+		env->ReleaseDoubleArrayElements(jB, B, JNI_ABORT);
+
 		env->ReleaseDoubleArrayElements(jC, C, 0);
-	}
 
 }
 
@@ -48,25 +44,27 @@ JNIEXPORT void JNICALL Java_com_company_Matrix_powerC
 	jint length = env1->GetArrayLength(d);
 	jboolean isCopyD;
 	jboolean isCopyRes;
-	jboolean isCopyTemp;
 	jdouble* D = env1->GetDoubleArrayElements(d, &isCopyD);
 	jdouble* RES = env1->GetDoubleArrayElements(res, &isCopyRes);
-	jdouble* TEMP = env1->GetDoubleArrayElements(res, &isCopyTemp);
+	jdouble* TEMP = new jdouble[length];
+	jdouble *reser = RES;
+	jdouble *temp = TEMP;
+	memcpy(TEMP, D, length * sizeof(jdouble));
 
-	for (auto i = 0; i < k; i++)
+	for (auto i = 1; i < k; i++)
 	{
+		// multiplies TEMP with D and writes result to RES
 		multiply(TEMP,D,RES,col,col,col);
-		memcpy(TEMP, RES, length*sizeof(jdouble));
+		//copy(begin(RES), end(RES), begin(TEMP));
+		//memcpy(TEMP, RES, length*sizeof(jdouble));
+		jdouble* swap = reser;
+		reser = temp;
+		temp = swap;
 	}
 
-	if (isCopyD == JNI_TRUE) {
-		env1->ReleaseDoubleArrayElements(d, D, 0);
-	}
-	if (isCopyRes == JNI_TRUE) {
-		env1->ReleaseDoubleArrayElements(res, RES, JNI_ABORT);
-	}
-	if (isCopyTemp == JNI_TRUE) {
-		env1->ReleaseDoubleArrayElements(res, TEMP, 0);
-	}
+		env1->ReleaseDoubleArrayElements(d, D, JNI_ABORT);
+
+		env1->ReleaseDoubleArrayElements(res, RES, 0);
+		delete(TEMP);
 
 }

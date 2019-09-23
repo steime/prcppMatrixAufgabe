@@ -73,10 +73,9 @@ public class Matrix {
         double[] deb = debug.matrix;
         double[] temp = this.matrix;
 
-        for (int i = 0; i < k ; i++) {
+        for (int i = 1; i < k ; i++) {
            deb = multi(temp,this.matrix,emp,length,length,length);
            temp = deb.clone();
-           //emp = res.clone();
         }
 
         result.setMatrix(deb);
@@ -95,6 +94,7 @@ public class Matrix {
         if (this.rows != this.columns) {
             throw new IllegalArgumentException("Matrix not quadratic");
         }
+        if (k == 1) return this;
         Matrix result = new Matrix(this.rows,this.columns,0);
         powerC(this.matrix, result.matrix, k, this.columns);
         return result;
