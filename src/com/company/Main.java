@@ -9,10 +9,10 @@ public class Main {
         m2 = new Matrix(rows2,columns2,3);
         m3 = new Matrix(250,250,2);
 
-        // Debug matrices
-       // m1 = new Matrix(3,3,2);
-       // m2 = new Matrix(3,3,3);
-//        m3 = new Matrix(3,3,2);
+        //Debug matrices
+//        m1 = new Matrix(3,3,2);
+//        m2 = new Matrix(3,3,3);
+//        m3 = new Matrix(4,4,2);
 
         long start1 = System.currentTimeMillis();
         m5 = m1.multiply(m2);

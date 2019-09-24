@@ -58,6 +58,8 @@ public class Matrix {
                 res [i * m2columns + j] = sum;
             }
         }
+
+
         return res;
     }
 

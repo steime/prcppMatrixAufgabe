@@ -3,14 +3,16 @@
 
 using namespace std;
 
+
+
 void multiply(jdouble* A, jdouble* B, jdouble* C, jint zeileA, jint spalteA, jint spalteB)
 {
 	jdouble sum = 0.0;
 	for (int i = 0; i < zeileA; i++) {
 		for (int j = 0; j < spalteB; j++) {
-			sum = 0.0;
+			sum = 0.0; int c = i * spalteA;
 			for (int k = 0; k < spalteA; k++) {
-				sum = sum + A[i * spalteA + k] * B[k * spalteB + j];
+				sum = sum + A[c + k] * B[k * spalteB + j];
 			}
 			C[i * spalteB + j] = sum;
 		}
@@ -29,42 +31,32 @@ JNIEXPORT void JNICALL Java_com_company_Matrix_multiplyC
 
 	multiply(A, B, C, zeileA, spalteA, spalteB);
 		
-
-		env->ReleaseDoubleArrayElements(jA, A, JNI_ABORT);
-
-		env->ReleaseDoubleArrayElements(jB, B, JNI_ABORT);
-
-		env->ReleaseDoubleArrayElements(jC, C, 0);
-
+	env->ReleaseDoubleArrayElements(jA, A, JNI_ABORT);
+	env->ReleaseDoubleArrayElements(jB, B, JNI_ABORT);
+	env->ReleaseDoubleArrayElements(jC, C, 0);
 }
 
 JNIEXPORT void JNICALL Java_com_company_Matrix_powerC
-(JNIEnv *env1, jobject jobj1, jdoubleArray d, jdoubleArray res, jint k, jint col)
+(JNIEnv *env1, jobject jobj1, jdoubleArray jD, jdoubleArray jRes, jint k, jint col)
 {
-	jint length = env1->GetArrayLength(d);
+	jint length = env1->GetArrayLength(jD);
 	jboolean isCopyD;
 	jboolean isCopyRes;
-	jdouble* D = env1->GetDoubleArrayElements(d, &isCopyD);
-	jdouble* RES = env1->GetDoubleArrayElements(res, &isCopyRes);
-	jdouble* TEMP = new jdouble[length];
-	jdouble *reser = RES;
-	jdouble *temp = TEMP;
-	memcpy(TEMP, D, length * sizeof(jdouble));
+	jdouble* d = env1->GetDoubleArrayElements(jD, &isCopyD);
+	jdouble* res = env1->GetDoubleArrayElements(jRes, &isCopyRes);
+	jdouble* temp = new jdouble[length];
+	jdouble *swap;
+	memcpy(temp, d, length * sizeof(jdouble));
 
-	for (auto i = 1; i < k; i++)
+	for (auto i = 0; i < k; i++)
 	{
-		// multiplies TEMP with D and writes result to RES
-		multiply(TEMP,D,RES,col,col,col);
-		//copy(begin(RES), end(RES), begin(TEMP));
-		//memcpy(TEMP, RES, length*sizeof(jdouble));
-		jdouble* swap = reser;
-		reser = temp;
+		multiply(temp,d,res,col,col,col);
+		swap = res;
+		res = temp;
 		temp = swap;
+
 	}
-
-		env1->ReleaseDoubleArrayElements(d, D, JNI_ABORT);
-
-		env1->ReleaseDoubleArrayElements(res, RES, 0);
-		delete(TEMP);
-
+	env1->ReleaseDoubleArrayElements(jD, d, JNI_ABORT);
+	env1->ReleaseDoubleArrayElements(jRes, res, 0);
+	delete(temp);
 }
