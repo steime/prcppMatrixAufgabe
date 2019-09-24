@@ -3,18 +3,16 @@
 
 using namespace std;
 
-
-
 void multiply(jdouble* A, jdouble* B, jdouble* C, jint zeileA, jint spalteA, jint spalteB)
 {
 	jdouble sum = 0.0;
-	for (int i = 0; i < zeileA; i++) {
-		for (int j = 0; j < spalteB; j++) {
+	for (int i = zeileA; i--; ) {
+		for (int j = spalteB; j--; ) {
 			sum = 0.0; int c = i * spalteA;
-			for (int k = 0; k < spalteA; k++) {
+			for (int k = spalteA; k--; ) {
 				sum = sum + A[c + k] * B[k * spalteB + j];
 			}
-			C[i * spalteB + j] = sum;
+			C[i * spalteB + j ] = sum;
 		}
 	}
 }
@@ -54,7 +52,6 @@ JNIEXPORT void JNICALL Java_com_company_Matrix_powerC
 		swap = res;
 		res = temp;
 		temp = swap;
-
 	}
 	env1->ReleaseDoubleArrayElements(jD, d, JNI_ABORT);
 	env1->ReleaseDoubleArrayElements(jRes, res, 0);
