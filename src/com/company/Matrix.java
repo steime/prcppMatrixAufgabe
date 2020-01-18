@@ -24,12 +24,27 @@ public class Matrix {
     public Matrix(int rows, int columns, int value) {
         this.rows = rows;
         this.columns = columns;
-        Random random = new Random();
         matrix = new double[rows * columns];
         for (int i = 0; i < matrix.length; i++) {
             matrix[i] = value;
         }
     }
+
+    public Matrix(int rows, int columns, boolean eye) {
+        this.rows = rows;
+        this.columns = columns;
+        matrix = new double[rows * columns];
+        if (eye) {
+            int place = 0;
+            for (int i = 0; i < rows; i++) {
+                matrix[place] = 1;
+                place = place + columns + 1;
+            }
+        } else {
+            Matrix m = new Matrix(rows,columns);
+        }
+    }
+
 
     public Matrix multiply(Matrix matrix) {
         Matrix result = new Matrix(this.rows, matrix.columns, 0);
@@ -43,44 +58,45 @@ public class Matrix {
         } else {
             System.out.println("Not possible");
         }
-            result.setMatrix(res);
-            return result;
+        result.setMatrix(res);
+        return result;
     }
 
-    private double[] multi(double[] m1, double[] m2, double[] res, int m1rows, int m1columns, int m2columns) {
+    private void multi(double[] m1, double[] m2, double[] res, int m1rows, int m1columns, int m2columns) {
         double sum = 0.0;
         for (int i = 0; i < m1rows; i++) {
+            int c = i * m1columns, d = i * m2columns;
             for (int j = 0; j < m2columns; j++) {
                 sum = 0.0;
                 for (int k = 0; k < m1columns; k++) {
-                    sum = sum + m1[i * m1columns + k] * m2[k * m2columns + j];
+                    sum = sum + m1[c + k] * m2[k * m2columns + j];
                 }
-                res [i * m2columns + j] = sum;
+                res [d + j] = sum;
             }
         }
-
-
-        return res;
     }
 
     public Matrix power(int k) {
         if (this.rows != this.columns) {
             throw new IllegalArgumentException("Matrix not quadratic");
         }
+        if (k == 0) return new Matrix(this.rows,this.columns,true);
+        if (k == 1) return this;
         int length = this.rows;
         Matrix empty = new Matrix(length,length,0);
-        Matrix debug = new Matrix(length,length,0);
         Matrix result = new Matrix(length,length,0);
         double[] emp = empty.matrix;
-        double[] deb = debug.matrix;
         double[] temp = this.matrix;
+        double[] swap;
 
         for (int i = 1; i < k ; i++) {
-           deb = multi(temp,this.matrix,emp,length,length,length);
-           temp = deb.clone();
+           multi(temp,this.matrix,emp,length,length,length);
+           swap = emp;
+           emp = temp;
+           temp = swap;
         }
 
-        result.setMatrix(deb);
+        result.setMatrix(temp);
         return result;
     }
 
@@ -96,6 +112,7 @@ public class Matrix {
         if (this.rows != this.columns) {
             throw new IllegalArgumentException("Matrix not quadratic");
         }
+        if (k == 0) return new Matrix(this.rows,this.columns,true);
         if (k == 1) return this;
         Matrix result = new Matrix(this.rows,this.columns,0);
         powerC(this.matrix, result.matrix, k, this.columns);
